@@ -12,9 +12,18 @@ The extension is published to the Visual Studio Code Marketplace as
    cannot be changed later, and it is independent of the GitHub organisation (same name is fine).
 3. **An Azure DevOps organization** — the PAT lives in an organization, and `https://dev.azure.com`
    alone only redirects to the marketing page (it is not the token page). Open
-   <https://aex.dev.azure.com/me> instead: it signs you in and lists your organizations, and if the
-   list is empty it offers *New organization* (free, no credit card, the name is only the URL).
-   An existing organization is fine as well.
+   <https://aex.dev.azure.com/me> instead: it signs you in and lists your organizations.
+
+   A **new** organization requires an active **Azure subscription** (see the
+   [prerequisites](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization)):
+   an *existing* organization and the free tier are not affected, but the creation wizard blocks
+   without a subscription ("We couldn't find any subscriptions you have access to"). The free (F0)
+   subscription is enough, and it is only the billing link of the organization: nothing is charged
+   while no billable resource is created. The signup asks for a phone number and a credit card for
+   identity verification, and the billing address has to match the card.
+
+   An existing organization is fine as well — any organization where the account is an
+   owner/contributor can issue the PAT.
 
 4. **A personal access token** — in the organization:
    `https://dev.azure.com/<organization>/_usersSettings/tokens` → *New Token*. Set the scope to
