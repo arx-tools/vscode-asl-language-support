@@ -3,7 +3,7 @@
 All notable changes to the "arx-scripting-language-support" extension are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## [0.2.0] - 2026-11-05
 
 ### Added
 
