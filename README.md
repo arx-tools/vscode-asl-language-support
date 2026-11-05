@@ -126,6 +126,12 @@ Libertatis checkout. See [`data/README.md`](data/README.md).
 
 ## Known limitations
 
+- The original scripts often end with a `\0` byte (883 of the 3488 files), and VS Code decides
+  from that byte that the file is binary: it opens the file as plain text after *Open Anyway*. The
+  extension restores the language when such a `.asl` document is opened, so the highlighting and the
+  diagnostics work after that click, but the editor cannot be talked out of the warning itself.
+- 255 of the original files use the uppercase `.ASL` extension; both cases are associated.
+
 - The parser is line oriented, like the engine: a command never continues on the next line. A line
   with more than one command (`IF (...) ACCEPT`) is checked as a whole, but only its first command is
   checked for the command name.

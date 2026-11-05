@@ -55,7 +55,8 @@
           "asl"
         ],
         "extensions": [
-          ".asl"
+          ".asl",
+          ".ASL"
         ],
         "configuration": "./language-configuration.json"
       }

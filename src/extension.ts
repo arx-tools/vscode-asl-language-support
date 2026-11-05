@@ -8,6 +8,7 @@ import { getCompletions, type CompletionEntry } from './asl/completion.ts'
 import { getDefinition } from './asl/definitions.ts'
 import { getFoldingRanges } from './asl/folding.ts'
 import { getHover } from './asl/hover.ts'
+import { isAslFileName } from './asl/language.ts'
 import { parseDocument } from './asl/parser.ts'
 import { getDocumentSymbols, type DocumentSymbolEntry } from './asl/symbols.ts'
 import type { ParsedDocument, Problem, Severity } from './asl/types.ts'
@@ -132,6 +133,26 @@ function readAnalysisOptions(): AnalysisOptions {
  */
 function isDiagnosticsEnabled(): boolean {
   return vscode.workspace.getConfiguration(SETTINGS_SECTION).get<boolean>('diagnostics.enabled', true)
+}
+
+/**
+ * Restores the language of an `.asl` document that the editor opened as plain text.
+ *
+ * The original scripts of the game often end with a `\0` byte (883 of the 3488 files), and the
+ * editor treats such a file as binary: the user has to pick *Open Anyway*, which opens it as plain
+ * text and skips the language association. The editor cannot be talked out of the binary detection,
+ * but the document of the *Open Anyway* path can be taken over here.
+ */
+async function ensureLanguage(document: vscode.TextDocument): Promise<void> {
+  if (document.languageId !== 'plaintext' || !isAslFileName(document.fileName)) {
+    return
+  }
+
+  try {
+    await vscode.languages.setTextDocumentLanguage(document, LANGUAGE_ID)
+  } catch {
+    // the document can be closed while the language is being set
+  }
 }
 
 /**
@@ -322,6 +343,7 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     diagnostics,
     vscode.workspace.onDidOpenTextDocument((document) => {
+      void ensureLanguage(document)
       diagnostics.update(document)
     }),
     vscode.workspace.onDidChangeTextDocument((event) => {
