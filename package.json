@@ -1,6 +1,6 @@
 {
   "name": "arx-scripting-language-support",
-  "displayName": "Arx Scripting Language support",
+  "displayName": "Arx Fatalis ASL",
   "description": "Language support for the Arx Fatalis scripting language (.asl): highlighting, snippets, diagnostics, completions and navigation",
   "version": "0.1.0",
   "publisher": "arx-tools",
