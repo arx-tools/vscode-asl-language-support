@@ -3,7 +3,13 @@
 All notable changes to the "arx-scripting-language-support" extension are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## [0.2.1] - 2026-11-05
+
+### Fixed
+
+- An `.asl` document that the editor opens as `plaintext` or as `code-text-binary` gets the `asl`
+  language back, so the highlighting and the diagnostics work after _Open Anyway_. The binary
+  warning itself comes from the editor's binary flag, and no extension can clear it.
 
 ### Removed
 

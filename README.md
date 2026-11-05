@@ -130,9 +130,11 @@ Libertatis checkout. See [`data/README.md`](data/README.md).
 - The original scripts often end with a `\0` byte (883 of the 3488 files). VS Code decides that a
   file is binary from a `\0` **in the first 512 bytes** (`ZERO_BYTE_DETECTION_BUFFER_MAX_LEN` in
   `src/vs/workbench/services/textfile/common/encoding.ts`), so 622 of the 3488 files show the
-  warning instead of the text. The built-in way to open them: click **Binary** in the status bar and
-  pick `ISO 8859-15`; the file reopens as text with the language of the extension. When a file is
-  opened as plain text (`Open Anyway`), the extension restores the `asl` language too.
+  warning instead of the text. The built-in way to open them: click **Binary** in the status bar
+  and pick **Arx Scripting Language**; the extension belongs to `iso885915`, so the file decodes
+  correctly as well. When a file is opened as plain text (`Open Anyway`), the extension restores the
+  `asl` language too — the warning itself comes from the editor's binary flag, which no extension
+  can clear.
 - 255 of the original files use the uppercase `.ASL` extension; both cases are associated.
 - The parser is line oriented, like the engine: a command never continues on the next line. A line
   with more than one command (`IF (...) ACCEPT`) is checked as a whole, but only its first command is
