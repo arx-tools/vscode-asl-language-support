@@ -44,6 +44,9 @@ full of them.
 - **go to definition**: from a `goto`/`gosub` to its label, from a variable to its first `set`,
 - **outline**: the event handlers with the labels they contain,
 - **folding**: the event blocks and every brace pair,
+- **Arx ASL: Open as readable text** — opens a script read only, with the full language support, even
+  when the editor refuses to display the file (the original scripts often end with a `\0` byte),
+
 - **snippets**: the usual blocks (`on init`, `if`/`else`, `sendevent`, `timer`, subroutine, …).
 
 **File defaults** (the game reads ISO-8859-1/15 with CRLF)
@@ -53,14 +56,14 @@ full of them.
 
 ## Settings
 
-| Setting | Default | What it does |
-|---|---|---|
-| `asl.diagnostics.enabled` | `true` | Turns the diagnostics on or off. |
-| `asl.diagnostics.commands` | `true` | Unknown commands and a `set` without a variable. |
-| `asl.diagnostics.structure` | `true` | Unbalanced braces, a missing `{` after an event, a malformed `if`. |
-| `asl.diagnostics.references` | `true` | A missing label, a duplicated label or event. |
-| `asl.diagnostics.strings` | `true` | An unterminated string or an unmatched `~`. |
-| `asl.diagnostics.missingTerminator` | `false` | An event block without `accept`, `refuse` or `return`. |
+| Setting                             | Default | What it does                                                       |
+| ----------------------------------- | ------- | ------------------------------------------------------------------ |
+| `asl.diagnostics.enabled`           | `true`  | Turns the diagnostics on or off.                                   |
+| `asl.diagnostics.commands`          | `true`  | Unknown commands and a `set` without a variable.                   |
+| `asl.diagnostics.structure`         | `true`  | Unbalanced braces, a missing `{` after an event, a malformed `if`. |
+| `asl.diagnostics.references`        | `true`  | A missing label, a duplicated label or event.                      |
+| `asl.diagnostics.strings`           | `true`  | An unterminated string or an unmatched `~`.                        |
+| `asl.diagnostics.missingTerminator` | `false` | An event block without `accept`, `refuse` or `return`.             |
 
 ## Install
 
@@ -109,27 +112,29 @@ Libertatis checkout. See [`data/README.md`](data/README.md).
 
 ## The layout
 
-| Path | What is it |
-|---|---|
-| `package.json` | the manifest: the language, the grammar, the snippets, the settings |
-| `language-configuration.json` | comments, brackets, indentation, the word pattern |
-| `syntaxes/asl.tmLanguage.json` | the generated TextMate grammar |
-| `snippets/asl.json` | the snippets |
-| `src/extension.ts` | the VS Code side: the providers and the diagnostic collection |
-| `src/asl/` | the language service, without the `vscode` module (so it is testable) |
-| `src/asl/lexer.ts` | the tokenizer, following the engine's `getWord()`/`getCommand()` |
-| `src/asl/parser.ts` | the line oriented collector of the events, labels, references and braces |
-| `src/asl/analysis.ts` | the checks |
-| `src/asl/metadata.generated.ts` | the generated command, event and system variable tables |
-| `data/` | the extracted engine data and its README |
-| `tests/` | `node:test` specs, mirroring `src/` |
+| Path                            | What is it                                                               |
+| ------------------------------- | ------------------------------------------------------------------------ |
+| `package.json`                  | the manifest: the language, the grammar, the snippets, the settings      |
+| `language-configuration.json`   | comments, brackets, indentation, the word pattern                        |
+| `syntaxes/asl.tmLanguage.json`  | the generated TextMate grammar                                           |
+| `snippets/asl.json`             | the snippets                                                             |
+| `src/extension.ts`              | the VS Code side: the providers and the diagnostic collection            |
+| `src/asl/`                      | the language service, without the `vscode` module (so it is testable)    |
+| `src/asl/lexer.ts`              | the tokenizer, following the engine's `getWord()`/`getCommand()`         |
+| `src/asl/parser.ts`             | the line oriented collector of the events, labels, references and braces |
+| `src/asl/analysis.ts`           | the checks                                                               |
+| `src/asl/metadata.generated.ts` | the generated command, event and system variable tables                  |
+| `data/`                         | the extracted engine data and its README                                 |
+| `tests/`                        | `node:test` specs, mirroring `src/`                                      |
 
 ## Known limitations
 
 - The original scripts often end with a `\0` byte (883 of the 3488 files), and VS Code decides
-  from that byte that the file is binary: it opens the file as plain text after *Open Anyway*. The
-  extension restores the language when such a `.asl` document is opened, so the highlighting and the
-  diagnostics work after that click, but the editor cannot be talked out of the warning itself.
+  from that byte that the file is binary: the editor shows a warning instead of the text, and _Open
+  Anyway_ opens it as plain text. The editor cannot be talked out of that warning, so the extension
+  offers **Arx ASL: Open as readable text** (the explorer context menu, the editor title or the
+  command palette): it opens the script read only, with the highlighting, the diagnostics and the
+  outline. When such a file is opened anyway, the extension restores the `asl` language as well.
 - 255 of the original files use the uppercase `.ASL` extension; both cases are associated.
 
 - The parser is line oriented, like the engine: a command never continues on the next line. A line

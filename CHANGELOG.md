@@ -3,6 +3,19 @@
 All notable changes to the "arx-scripting-language-support" extension are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Added
+
+- The `Arx ASL: Open as readable text` command: it opens a script read only, with the language
+  support, even when the editor treats the file as binary.
+
+### Fixed
+
+- The uppercase `.ASL` extension of the original corpus (255 files) is associated with the language.
+- A script that the editor opens as plain text (the `\0` terminated files) gets the `asl` language
+  back, so the highlighting and the diagnostics work after _Open Anyway_.
+
 ## [0.1.0] - 2026-11-05
 
 ### Added
