@@ -8,7 +8,7 @@ import { getCompletions, type CompletionEntry } from './asl/completion.ts'
 import { getDefinition } from './asl/definitions.ts'
 import { getFoldingRanges } from './asl/folding.ts'
 import { getHover } from './asl/hover.ts'
-import { isAslFileName } from './asl/language.ts'
+import { needsAslLanguage } from './asl/language.ts'
 import { parseDocument } from './asl/parser.ts'
 import { getDocumentSymbols, type DocumentSymbolEntry } from './asl/symbols.ts'
 import type { ParsedDocument, Problem, Severity } from './asl/types.ts'
@@ -144,7 +144,7 @@ function isDiagnosticsEnabled(): boolean {
  * but the document of the *Open Anyway* path can be taken over here.
  */
 async function ensureLanguage(document: vscode.TextDocument): Promise<void> {
-  if (document.languageId !== 'plaintext' || !isAslFileName(document.fileName)) {
+  if (!needsAslLanguage(document.fileName, document.languageId)) {
     return
   }
 
