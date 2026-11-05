@@ -1,0 +1,13 @@
+{
+  "extends": "@arx-tools/config/tsconfig.base.json",
+  "compilerOptions": {
+    // the sources produce the types, the bundle is made by esbuild, so `tsc` only checks them
+    "noEmit": true,
+    "incremental": false,
+    "rootDir": "./src",
+    // `@types/vscode` declares the `vscode` module, so it has to be listed explicitly
+    "types": ["node", "vscode"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

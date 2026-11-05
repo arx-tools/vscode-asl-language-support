@@ -1,0 +1,14 @@
+{
+  // this file exists for the editors only: visual studio code discovers the `tsconfig.json` files and
+  // ignores the folder specific ones. without it the sources under `tests/`, `scripts/` and the
+  // `xo.config.ts` would fall into the inferred project, where the `node:` imports are unresolved.
+  // for the actual checks look at the folder specific configs: `tsconfig.src.json`,
+  // `tsconfig.scripts.json` and `tsconfig.tests.json` — the `typecheck` script always passes an
+  // explicit `-p` flag
+  "extends": "./tsconfig.src.json",
+  "compilerOptions": {
+    "incremental": false,
+    "rootDir": "."
+  },
+  "include": ["src/**/*", "tests/**/*", "scripts/**/*", "xo.config.ts"]
+}

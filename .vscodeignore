@@ -1,0 +1,13 @@
+.vscode/**
+.gitignore
+.gitattributes
+xo.config.ts
+xo.config.mjs
+tsconfig*.json
+PUBLISHING.md
+**/*.map
+data/**
+scripts/**
+src/**
+tests/**
+node_modules/**

@@ -1,0 +1,158 @@
+{
+  "name": "arx-scripting-language-support",
+  "displayName": "Arx Scripting Language support",
+  "description": "Language support for the Arx Fatalis scripting language (.asl): highlighting, snippets, diagnostics, completions and navigation",
+  "version": "0.1.0",
+  "publisher": "arx-tools",
+  "type": "module",
+  "main": "./dist/extension.js",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Snippets"
+  ],
+  "keywords": [
+    "arx",
+    "arx fatalis",
+    "arx libertatis",
+    "asl",
+    "arx scripting language",
+    "language support"
+  ],
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1e1a14",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arx-tools/vscode-asl-language-support.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arx-tools/vscode-asl-language-support/issues"
+  },
+  "homepage": "https://github.com/arx-tools/vscode-asl-language-support#readme",
+  "author": "Lajos Meszaros <m_lajos@hotmail.com>",
+  "contributors": [
+    {
+      "name": "DeepSeek Harness (AI coding agent) using DeepSeek-V41-Flash"
+    }
+  ],
+  "activationEvents": [
+    "onLanguage:asl"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "asl",
+        "aliases": [
+          "Arx Scripting Language",
+          "ASL",
+          "asl"
+        ],
+        "extensions": [
+          ".asl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "asl",
+        "scopeName": "source.asl",
+        "path": "./syntaxes/asl.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "asl",
+        "path": "./snippets/asl.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[asl]": {
+        "files.encoding": "iso885915",
+        "files.eol": "\r\n",
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false,
+        "editor.autoClosingBrackets": "languageDefined",
+        "editor.wordWrap": "off"
+      }
+    },
+    "configuration": {
+      "title": "Arx Scripting Language",
+      "properties": {
+        "asl.diagnostics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the diagnostics (the squiggles) for .asl documents."
+        },
+        "asl.diagnostics.commands": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report the command problems: a word that is not a known AL command (case-insensitive, the underscores are ignored, every `timer<name>` is valid), and a `set` without a variable target."
+        },
+        "asl.diagnostics.structure": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report structural problems: unbalanced braces, a missing `{` after an `on` event, and a malformed `if` condition."
+        },
+        "asl.diagnostics.references": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report a `goto`/`gosub` with a missing label, and a duplicated `on` event or label (the game only resolves the first occurrence)."
+        },
+        "asl.diagnostics.strings": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report an unterminated string or an unmatched `~` interpolation."
+        },
+        "asl.diagnostics.missingTerminator": {
+          "type": "boolean",
+          "default": false,
+          "description": "Report an event block that ends without `accept`, `refuse` or `return`. The game logs a warning for these, but the original scripts are full of them."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.ts",
+    "build:watch": "nodemon --watch src --watch dist/package.json --exec \"npm run build\" --ext ts",
+    "extract": "node scripts/extract-al-metadata.ts",
+    "generate": "node scripts/generate.ts",
+    "lint": "rm -f xo.config.mjs && xo --ignore 'xo.config.mjs'",
+    "lint:watch": "nodemon --watch src --watch tests --watch scripts --watch xo.config.ts --exec \"npm run lint\" --ext ts",
+    "prepublishOnly": "npm run lint && npm run typecheck && npm run test && rm -rf dist && npm run build",
+    "test": "arx-lib-test",
+    "test:watch": "nodemon --watch src --watch tests --exec \"npm run test\" --ext ts",
+    "vsix": "vsce package --no-dependencies",
+    "publish:marketplace": "npm run lint && npm run typecheck && npm run test && npm run build && vsce publish --no-dependencies",
+    "typecheck": "tsc -p tsconfig.src.json && tsc -p tsconfig.scripts.json && tsc -p tsconfig.tests.json && tsc -p tsconfig.json",
+    "vscode:prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "@arx-tools/config": "^0.1.0",
+    "@vscode/vsce": "^4.1.0",
+    "@types/node": "^22.20.5",
+    "@types/vscode": "^1.94.0",
+    "esbuild": "^0.28.2",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "nodemon": "^3.1.14",
+    "pre-commit": "^2.0.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "xo": "^5.0.1"
+  },
+  "pre-commit": {
+    "run": [
+      "lint",
+      "typecheck",
+      "test"
+    ]
+  },
+  "prettier": "@arx-tools/config/prettier"
+}

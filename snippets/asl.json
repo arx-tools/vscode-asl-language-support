@@ -1,0 +1,117 @@
+{
+  "on init": {
+    "prefix": ["oninit", "on init"],
+    "body": ["ON INIT {", "\t$0", "\tACCEPT", "}"],
+    "description": "The init block, which runs when the entity is created."
+  },
+  "on custom": {
+    "prefix": ["oncustom", "on custom"],
+    "body": ["ON CUSTOM {", "\t$0", "\tACCEPT", "}"],
+    "description": "The custom block, which runs on a SENDEVENT or SETMAINEVENT."
+  },
+  "on event": {
+    "prefix": ["onevent"],
+    "body": ["ON ${1:MAIN} {", "\t$0", "\tACCEPT", "}"],
+    "description": "An event block with any event name."
+  },
+  "on initend": {
+    "prefix": ["oninitend"],
+    "body": ["ON INITEND {", "\t$0", "\tACCEPT", "}"],
+    "description": "The initend block, which runs after the init blocks."
+  },
+  "if block": {
+    "prefix": ["if"],
+    "body": ["IF (${1:$}${2:variable} ${3:==} ${4:value}) {", "\t$0", "}"],
+    "description": "An if block."
+  },
+  "if else": {
+    "prefix": ["ifelse"],
+    "body": ["IF (${1:$}${2:variable} ${3:==} ${4:value}) {", "\t${5}", "}", "ELSE {", "\t$0", "}"],
+    "description": "An if block with an else branch."
+  },
+  "if single statement": {
+    "prefix": ["ifone"],
+    "body": ["IF (${1:$}${2:variable} ${3:==} ${4:value}) ${5:ACCEPT}"],
+    "description": "An if with a single statement, like the original scripts."
+  },
+  "random": {
+    "prefix": ["random"],
+    "body": ["RANDOM ${1:50} {", "\t$0", "}"],
+    "description": "A block with the given percentage chance."
+  },
+  "set": {
+    "prefix": ["set"],
+    "body": ["SET ${1:§}${2:variable} ${3:value}"],
+    "description": "Assigns a variable."
+  },
+  "sendevent": {
+    "prefix": ["sendevent"],
+    "body": ["SENDEVENT ${1:event} ${2:target} \"${3:param1}\""],
+    "description": "Queues an event for an entity."
+  },
+  "timer": {
+    "prefix": ["timer"],
+    "body": ["TIMER${1:name} -m ${2:1000} ${3:1} ${0:ACCEPT}"],
+    "description": "A timer that runs the rest of the line later, count times."
+  },
+  "label": {
+    "prefix": ["label"],
+    "body": [">>${1:name}"],
+    "description": "A jump label."
+  },
+  "goto": {
+    "prefix": ["goto"],
+    "body": ["GOTO ${1:name}"],
+    "description": "Jumps to a label."
+  },
+  "gosub": {
+    "prefix": ["gosub"],
+    "body": ["GOSUB ${1:name}"],
+    "description": "Calls a label and returns on RETURN."
+  },
+  "subroutine": {
+    "prefix": ["subroutine"],
+    "body": [">>${1:name}", "\t$0", "\tRETURN"],
+    "description": "A subroutine that a GOSUB can call."
+  },
+  "speak": {
+    "prefix": ["speak"],
+    "body": ["SPEAK \"${1:text key}\" ${0:ACCEPT}"],
+    "description": "Plays a voice line."
+  },
+  "playanim": {
+    "prefix": ["playanim"],
+    "body": ["PLAYANIM -e ${1:animation} ${0:ACCEPT}"],
+    "description": "Plays an animation and continues at the end of it."
+  },
+  "inventory add": {
+    "prefix": ["invadd"],
+    "body": ["INVENTORY ADD ${1:$}${2:item}"],
+    "description": "Adds an item to the inventory of the entity."
+  },
+  "behavior": {
+    "prefix": ["behavior"],
+    "body": ["BEHAVIOR ${1:MOVE_TO} ${2:target}"],
+    "description": "Sets the behaviour of an NPC."
+  },
+  "tweak skin": {
+    "prefix": ["tweakskin"],
+    "body": ["TWEAK SKIN ${1:old} ${2:new}"],
+    "description": "Replaces a skin of the entity."
+  },
+  "spawn item": {
+    "prefix": ["spawnitem"],
+    "body": ["SPAWN ITEM ${1:class} ${2:$}${3:position}"],
+    "description": "Creates an item entity."
+  },
+  "accept": {
+    "prefix": ["accept"],
+    "body": ["ACCEPT"],
+    "description": "Ends the event handler successfully."
+  },
+  "refuse": {
+    "prefix": ["refuse"],
+    "body": ["REFUSE"],
+    "description": "Ends the event handler with a refusal."
+  }
+}
