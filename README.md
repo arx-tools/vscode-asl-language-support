@@ -44,8 +44,6 @@ full of them.
 - **go to definition**: from a `goto`/`gosub` to its label, from a variable to its first `set`,
 - **outline**: the event handlers with the labels they contain,
 - **folding**: the event blocks and every brace pair,
-- **Arx ASL: Open as readable text** — opens a script read only, with the full language support, even
-  when the editor refuses to display the file (the original scripts often end with a `\0` byte),
 
 - **snippets**: the usual blocks (`on init`, `if`/`else`, `sendevent`, `timer`, subroutine, …).
 
@@ -131,12 +129,10 @@ Libertatis checkout. See [`data/README.md`](data/README.md).
 
 - The original scripts often end with a `\0` byte (883 of the 3488 files). VS Code decides that a
   file is binary from a `\0` **in the first 512 bytes** (`ZERO_BYTE_DETECTION_BUFFER_MAX_LEN` in
-  `src/vs/workbench/services/textfile/common/encoding.ts`), so 622 of the 3488 files are affected:
-  the editor shows a warning instead of the text, and _Open Anyway_ opens it as plain text. The
-  editor cannot be talked out of that warning, so the extension offers **Arx ASL: Open as readable
-  text** (the explorer context menu, the editor title or the command palette): it opens the script
-  read only, with the highlighting, the diagnostics and the outline. When such a file is opened
-  anyway, the extension restores the `asl` language as well.
+  `src/vs/workbench/services/textfile/common/encoding.ts`), so 622 of the 3488 files show the
+  warning instead of the text. The built-in way to open them: click **Binary** in the status bar and
+  pick `ISO 8859-15`; the file reopens as text with the language of the extension. When a file is
+  opened as plain text (`Open Anyway`), the extension restores the `asl` language too.
 - 255 of the original files use the uppercase `.ASL` extension; both cases are associated.
 - The parser is line oriented, like the engine: a command never continues on the next line. A line
   with more than one command (`IF (...) ACCEPT`) is checked as a whole, but only its first command is

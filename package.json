@@ -119,35 +119,6 @@
           "description": "Report an event block that ends without `accept`, `refuse` or `return`. The game logs a warning for these, but the original scripts are full of them."
         }
       }
-    },
-    "commands": [
-      {
-        "command": "asl.openReadable",
-        "title": "Open as readable text",
-        "category": "Arx ASL"
-      }
-    ],
-    "menus": {
-      "explorer/context": [
-        {
-          "command": "asl.openReadable",
-          "when": "resourceExtname == .asl || resourceExtname == .ASL",
-          "group": "navigation"
-        }
-      ],
-      "editor/title": [
-        {
-          "command": "asl.openReadable",
-          "when": "resourceExtname == .asl || resourceExtname == .ASL",
-          "group": "navigation"
-        }
-      ],
-      "commandPalette": [
-        {
-          "command": "asl.openReadable",
-          "when": "resourceExtname == .asl || resourceExtname == .ASL"
-        }
-      ]
     }
   },
   "scripts": {

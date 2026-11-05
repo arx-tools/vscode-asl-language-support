@@ -6,7 +6,6 @@ import * as vscode from 'vscode'
 import { analyze, type AnalysisOptions } from './asl/analysis.ts'
 import { getCompletions, type CompletionEntry } from './asl/completion.ts'
 import { getDefinition } from './asl/definitions.ts'
-import { decodeScript } from './asl/encoding.ts'
 import { getFoldingRanges } from './asl/folding.ts'
 import { getHover } from './asl/hover.ts'
 import { isAslFileName } from './asl/language.ts'
@@ -18,17 +17,6 @@ import type { ParsedDocument, Problem, Severity } from './asl/types.ts'
  * The identifier of the language, as it is declared in the manifest.
  */
 const LANGUAGE_ID = 'asl'
-
-/**
- * The scheme of the read only view of a script. The content provider serves it from the original
- * file, so the editor does not run the binary detection on it.
- */
-const READABLE_SCHEME = 'arx-asl'
-
-/**
- * The command that opens the readable view of a script.
- */
-const OPEN_READABLE_COMMAND = 'asl.openReadable'
 
 /**
  * The section of the settings.
@@ -165,47 +153,6 @@ async function ensureLanguage(document: vscode.TextDocument): Promise<void> {
   } catch {
     // the document can be closed while the language is being set
   }
-}
-
-/**
- * Serves the text of a script for the read only editor view.
- */
-class ReadableContentProvider implements vscode.TextDocumentContentProvider {
-  /**
-   * Returns the text of the original file, without the NUL bytes.
-   *
-   * @param uri The readable uri of the script.
-   * @returns The text of the script.
-   */
-  public async provideTextDocumentContent(uri: vscode.Uri): Promise<string> {
-    const data = await vscode.workspace.fs.readFile(uri.with({ scheme: 'file' }))
-
-    return decodeScript(data)
-  }
-}
-
-/**
- * Opens the readable view of a script.
- *
- * The original scripts can end with a `\0` byte, and the editor refuses to display such a file
- * (it offers *Open Anyway*, which opens it as plain text). The readable view bypasses that: the
- * content provider serves the text, the language is `asl`, so the highlighting, the diagnostics and
- * the outline work, and the document is read only.
- *
- * @param uri The file to open, the active editor by default.
- */
-async function openReadable(uri?: vscode.Uri): Promise<void> {
-  const target = uri ?? vscode.window.activeTextEditor?.document.uri
-
-  if (target?.scheme !== 'file') {
-    void vscode.window.showInformationMessage('Open an Arx Fatalis script (.asl) first.')
-    return
-  }
-
-  const document = await vscode.workspace.openTextDocument(target.with({ scheme: READABLE_SCHEME }))
-
-  await ensureLanguage(document)
-  await vscode.window.showTextDocument(document, { preview: false })
 }
 
 /**
@@ -395,8 +342,6 @@ export function activate(context: vscode.ExtensionContext): void {
 
   context.subscriptions.push(
     diagnostics,
-    vscode.workspace.registerTextDocumentContentProvider(READABLE_SCHEME, new ReadableContentProvider()),
-    vscode.commands.registerCommand(OPEN_READABLE_COMMAND, openReadable),
     vscode.workspace.onDidOpenTextDocument((document) => {
       void ensureLanguage(document)
       diagnostics.update(document)

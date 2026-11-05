@@ -3,6 +3,14 @@
 All notable changes to the "arx-scripting-language-support" extension are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Removed
+
+- The `Arx ASL: Open as readable text` command. The built-in way to open a script that the editor
+  treats as binary is the **Binary** entry of the status bar: pick `ISO 8859-15` there, and the file
+  reopens as text with the language of the extension.
+
 ## [0.2.0] - 2026-11-05
 
 ### Added
