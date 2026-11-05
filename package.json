@@ -2,7 +2,7 @@
   "name": "arx-scripting-language-support",
   "displayName": "Arx Fatalis ASL",
   "description": "Language support for the Arx Fatalis scripting language (.asl): highlighting, snippets, diagnostics, completions and navigation",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "arx-tools",
   "type": "module",
   "main": "./dist/extension.js",
