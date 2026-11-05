@@ -10,17 +10,36 @@ The extension is published to the Visual Studio Code Marketplace as
 2. **The publisher** — open <https://marketplace.visualstudio.com/manage> and create a publisher
    with the **ID `arx-tools`**. The ID has to match the `publisher` field of `package.json`, it
    cannot be changed later, and it is independent of the GitHub organisation (same name is fine).
-3. **A personal access token** — open <https://dev.azure.com>, then *User settings* → *Personal
-   access tokens* → *New Token*. Set the organization to *All accessible organizations* (or the one
-   that owns the publisher), the scope to **Marketplace → Manage**, and an expiry. The token is
-   shown once.
-4. **Log in with vsce** — it stores the token in the user profile, so this is a one time step:
+3. **An Azure DevOps organization** — the PAT lives in an organization, and `https://dev.azure.com`
+   alone only redirects to the marketing page (it is not the token page). Open
+   <https://aex.dev.azure.com/me> instead: it signs you in and lists your organizations, and if the
+   list is empty it offers *New organization* (free, no credit card, the name is only the URL).
+   An existing organization is fine as well.
+
+4. **A personal access token** — in the organization:
+   `https://dev.azure.com/<organization>/_usersSettings/tokens` → *New Token*. Set the scope to
+   **Marketplace → Manage** (under the *Marketplace* group) and pick an expiry. The token is shown
+   once.
+
+   > The PAT is tied to the account that owns the publisher: use the same sign-in as
+   > <https://marketplace.visualstudio.com/manage>.
+
+   > Global PATs (*All accessible organizations*) are being retired by Azure DevOps: the existing
+   > ones stop working on 2027-01-27, and new global PATs cannot be created after 2026-12-01. When
+   > that happens, either create an organization scoped PAT with the Marketplace scope (if the
+   > portal allows it for your org) or publish with Microsoft Entra ID:
+   > `npx vsce publish --azure-credential`.
+5. **Log in with vsce** — it stores the token in the user profile, so this is a one time step:
 
    ```sh
    npx vsce login arx-tools
    ```
 
-   Or pass it per command: `VSCE_PAT=… npm run publish:marketplace`.
+   Or pass it per command: `VSCE_PAT=… npm run publish:marketplace`. Check it without publishing:
+
+   ```sh
+   npx vsce verify-pat arx-tools
+   ```
 
 ## Every release
 
